@@ -1,0 +1,21 @@
+{
+  "name": "ai-mafia-arena",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node controller/main.mjs check",
+    "web": "node controller/server.mjs",
+    "mafia:dry": "node controller/main.mjs mafia --dry-run --events-json",
+    "auth:all": "scripts\\open-login-windows.cmd",
+    "auth:codex": "scripts\\login-codex.cmd",
+    "auth:claude": "scripts\\login-claude.cmd",
+    "auth:gemini": "scripts\\login-gemini.cmd",
+    "debate:dry": "node controller/main.mjs debate --dry-run --topic \"CLI based AI debate smoke test\" --rounds 1",
+    "debate:gpt": "node controller/main.mjs debate --players gpt_1,gpt_2 --topic \"AI players are testing the first arena loop\" --rounds 1",
+    "smoke:gpt": "node controller/main.mjs smoke --player gpt_1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

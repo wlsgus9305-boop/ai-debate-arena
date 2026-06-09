@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Debate Arena</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>AI Debate Arena</h1>
+        <p id="statusText">대기 중</p>
+      </div>
+      <div class="status-pill" id="connectionStatus">연결 중</div>
+    </header>
+
+    <main class="layout">
+      <aside class="control-panel">
+        <section class="panel-section">
+          <h2>게임 설정</h2>
+          <label class="field" for="modeSelect">
+            <span>진행 모드</span>
+            <select id="modeSelect">
+              <option value="mafia">마피아 게임</option>
+              <option value="debate">일반 토론</option>
+            </select>
+          </label>
+          <label class="field" for="topic">
+            <span>오늘의 판</span>
+            <textarea id="topic" rows="3">서로의 공개 발언만 보고 마피아를 찾아라.</textarea>
+          </label>
+
+          <div class="small-grid">
+            <label class="field" for="maxDays">
+              <span>최대 일수</span>
+              <input id="maxDays" type="number" min="1" max="7" value="3">
+            </label>
+            <label class="field" for="dayRounds">
+              <span>낮 발언 라운드</span>
+              <input id="dayRounds" type="number" min="1" max="3" value="1">
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>CLI 연결</h2>
+            <button id="checkProvidersBtn" type="button">연결 확인</button>
+          </div>
+          <div class="provider-status-list" id="providerStatusList"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>역할 수</h2>
+            <button id="applyRecommendBtn" type="button">추천 적용</button>
+          </div>
+          <div class="recommend" id="recommendText">추천 계산 중</div>
+          <div class="role-grid">
+            <label class="field" for="mafiaCount">
+              <span>마피아</span>
+              <input id="mafiaCount" type="number" min="1" value="2">
+            </label>
+            <label class="field" for="policeCount">
+              <span>경찰</span>
+              <input id="policeCount" type="number" min="0" value="1">
+            </label>
+            <label class="field" for="doctorCount">
+              <span>의사</span>
+              <input id="doctorCount" type="number" min="0" value="1">
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-section switches">
+          <label class="toggle">
+            <input id="interruptEnabled" type="checkbox" checked>
+            <span>돌발 발언</span>
+          </label>
+          <label class="toggle">
+            <input id="spectatorRevealRoles" type="checkbox" checked>
+            <span>관전자 역할 공개</span>
+          </label>
+          <label class="toggle">
+            <input id="dryRun" type="checkbox">
+            <span>드라이런</span>
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>플레이어</h2>
+            <button id="addPlayerBtn" type="button">AI 추가</button>
+          </div>
+          <div class="players" id="players"></div>
+        </section>
+
+        <section class="actions">
+          <button id="startBtn" type="button">시작</button>
+          <button id="stopBtn" type="button">중지</button>
+        </section>
+      </aside>
+
+      <section class="arena">
+        <div class="arena-head">
+          <div>
+            <h2>관전석</h2>
+            <p id="sessionMeta">아직 세션이 시작되지 않았습니다.</p>
+          </div>
+          <button id="clearBtn" type="button">지우기</button>
+        </div>
+
+        <div class="role-board" id="roleBoard"></div>
+        <div class="timeline" id="timeline"></div>
+        <div class="watch-dock" id="watchDock">
+          <div class="activity-panel" id="activityPanel">
+            <div class="activity-dot"></div>
+            <div>
+              <strong id="activityTitle">대기 중</strong>
+              <p id="activityDetail">새 게임을 시작하면 사회자와 AI 상태가 여기에 표시됩니다.</p>
+            </div>
+          </div>
+          <div class="life-panel">
+            <div>
+              <strong>생존</strong>
+              <div class="life-list" id="aliveList"></div>
+            </div>
+            <div>
+              <strong>사망/처형</strong>
+              <div class="life-list" id="deadList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

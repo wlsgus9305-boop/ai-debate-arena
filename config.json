@@ -1,0 +1,151 @@
+{
+  "game": {
+    "mode": "mafia",
+    "rounds": 1,
+    "maxDays": 3,
+    "dayRounds": 1,
+    "firstDayExecution": false,
+    "responseEndToken": "<<<END>>>",
+    "turnTimeoutMs": 180000,
+    "maxSpeechChars": 900,
+    "publicLogPath": "logs/public_log.md",
+    "privateLogDir": "logs/private",
+    "roles": {
+      "mafia": 1,
+      "police": 1,
+      "doctor": 1
+    },
+    "interrupt": {
+      "enabled": true,
+      "chance": 0.65
+    },
+    "spectatorRevealRoles": true
+  },
+  "providers": {
+    "codex": {
+      "command": "codex",
+      "color": "#6fb1ff",
+      "note": "Codex uses the local authenticated ChatGPT/Codex session.",
+      "model": {
+        "insertAfter": "exec",
+        "args": ["--model", "{model}"],
+        "presets": ["", "gpt-5-codex", "gpt-5.2-codex", "gpt-5.3-codex", "codex-mini-latest"]
+      },
+      "args": [
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--skip-git-repo-check",
+        "--ephemeral",
+        "--sandbox",
+        "read-only",
+        "--output-last-message",
+        "{output_file}",
+        "-"
+      ]
+    },
+    "claude": {
+      "command": "claude",
+      "color": "#d69f68",
+      "note": "Claude Code uses the local authenticated Claude Code session, or ANTHROPIC_API_KEY when provided.",
+      "model": {
+        "insertAt": "start",
+        "args": ["--model", "{model}"],
+        "presets": ["", "sonnet", "opus", "claude-sonnet-4-20250514"]
+      },
+      "args": [
+        "-p",
+        "--permission-mode",
+        "dontAsk",
+        "--tools",
+        "",
+        "--output-format",
+        "text",
+        "--no-session-persistence"
+      ]
+    },
+    "gemini": {
+      "command": "npx",
+      "color": "#9f87ff",
+      "note": "Gemini runs through npx @google/gemini-cli unless installed globally. Use local Gemini CLI auth or GEMINI_API_KEY.",
+      "model": {
+        "insertAfter": "@google/gemini-cli",
+        "args": ["-m", "{model}"],
+        "presets": ["", "gemini-2.5-pro", "gemini-2.5-flash"]
+      },
+      "args": [
+        "--yes",
+        "@google/gemini-cli",
+        "-p",
+        "",
+        "--approval-mode",
+        "plan",
+        "--output-format",
+        "text",
+        "--skip-trust"
+      ]
+    }
+  },
+  "players": [
+    {
+      "id": "gpt_1",
+      "displayName": "서준",
+      "provider": "codex",
+      "enabled": true,
+      "workdir": "agents/gpt_1",
+      "model": "",
+      "color": "#f59e0b",
+      "personality": "차분한 논리파. 감정 표현은 적지만 말의 모순을 끝까지 물고 늘어진다."
+    },
+    {
+      "id": "gpt_2",
+      "displayName": "지안",
+      "provider": "codex",
+      "enabled": true,
+      "workdir": "agents/gpt_2",
+      "model": "",
+      "color": "#38bdf8",
+      "personality": "날카로운 반문가. 상대의 애매한 표현을 바로 찌르고 압박한다."
+    },
+    {
+      "id": "claude_1",
+      "displayName": "하린",
+      "provider": "claude",
+      "enabled": true,
+      "workdir": "agents/claude_1",
+      "model": "",
+      "color": "#fb7185",
+      "personality": "공감형 전략가. 분위기를 읽고 동맹처럼 다가가면서 정보를 끌어낸다."
+    },
+    {
+      "id": "claude_2",
+      "displayName": "도윤",
+      "provider": "claude",
+      "enabled": true,
+      "workdir": "agents/claude_2",
+      "model": "",
+      "color": "#a78bfa",
+      "personality": "침착한 회의주의자. 확신하지 않지만 의심의 방향을 조용히 바꾼다."
+    },
+    {
+      "id": "gemini_1",
+      "displayName": "유나",
+      "provider": "gemini",
+      "enabled": true,
+      "workdir": "agents/gemini_1",
+      "model": "",
+      "color": "#34d399",
+      "personality": "직감 강한 공격수. 작은 단서에도 과감히 몰아붙이고 판을 흔든다."
+    },
+    {
+      "id": "gemini_2",
+      "displayName": "민준",
+      "provider": "gemini",
+      "enabled": true,
+      "workdir": "agents/gemini_2",
+      "model": "",
+      "color": "#f472b6",
+      "personality": "농담 섞는 교란형 분석가. 가볍게 말하지만 핵심 의심은 놓치지 않는다."
+    }
+  ]
+}

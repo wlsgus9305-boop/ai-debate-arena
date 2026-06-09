@@ -1,0 +1,17 @@
+.env
+node_modules/
+npm-debug.log*
+
+logs/private/*
+!logs/private/.gitkeep
+logs/sessions/*
+!logs/sessions/.gitkeep
+logs/*.md
+logs/*.jsonl
+logs/*.log
+
+agents/*/output*.md
+agents/*/last_response.md
+agents/*/input.md
+agents/*/tmp*
+agents/custom_*/
