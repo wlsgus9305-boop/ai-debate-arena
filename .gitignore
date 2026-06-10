@@ -1,4 +1,5 @@
 .env
+config.local.json
 node_modules/
 npm-debug.log*
 
@@ -15,3 +16,5 @@ agents/*/last_response.md
 agents/*/input.md
 agents/*/tmp*
 agents/custom_*/
+.omc/
+agents/*/.omc/

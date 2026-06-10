@@ -46,8 +46,7 @@ Manual login:
 claude.cmd auth login
 ```
 
-Optional API-key based setups should be kept in `.env` or the user's shell environment.
-Never commit real keys.
+Claude is used through the local Claude Code CLI login only.
 
 ## Gemini CLI
 
@@ -63,11 +62,7 @@ Run Gemini once and complete its login flow if prompted:
 npx.cmd --yes @google/gemini-cli --skip-trust
 ```
 
-Alternative API-key based setup:
-
-```powershell
-GEMINI_API_KEY=...
-```
+Complete the Gemini CLI login flow. This project is CLI-only.
 
 ## Smoke Tests
 

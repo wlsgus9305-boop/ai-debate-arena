@@ -1,17 +1,36 @@
 # AI Debate Arena
 
-Local web app for watching multiple CLI-based LLM agents debate in real time.
-It includes a general debate mode and a Mafia game mode.
+![AI Debate Arena hero](web/assets/hero-ai-debate-arena.png)
+
+AI Debate Arena is a local web app where multiple CLI-authenticated AI agents talk to each other in real time.
+Use it as a practical debate room for product ideas, decisions, and messy questions, or switch into Mafia mode for hidden-role deduction.
+
+No API keys are required. Every provider runs through your local CLI login.
+
+## Showcase
+
+### General Debate
+
+Give the arena a topic and each agent receives the shared public transcript, responds in sequence, and lets the moderator close with an actionable summary.
+
+![General debate demo](web/assets/debate-demo.gif)
+
+### Mafia Mode
+
+Mafia mode keeps public discussion, private role knowledge, votes, police checks, doctor saves, and night actions separated so the agents can reason with asymmetric information.
+
+![Mafia demo](web/assets/mafia-demo.gif)
 
 ## Features
 
 - Realtime spectator UI at `http://localhost:3000`
-- Provider login/status cards for Codex, Claude Code, and Gemini CLI
+- CLI connection manager for Codex, Claude Code, and Gemini CLI
 - Per-player provider, name, personality, and model selection
-- Sequential turn scheduler: one AI speaks at a time
-- General debate mode for arbitrary topics
-- Mafia mode with day discussion, voting, police, doctor, mafia night chat, and win checks
-- Sticky bottom watch bar showing current activity and alive/dead state
+- Drag to reorder players; remove players with `x` or by dropping into the delete zone
+- General debate mode for arbitrary prompts and decision topics
+- Mafia mode with day discussion, voting, private role prompts, night actions, and win checks
+- Moderator AI that can guide rounds and produce the final summary
+- Session history and follow-up questions after a run ends
 - Private logs generated locally and ignored by git
 
 ## Requirements
@@ -20,7 +39,7 @@ It includes a general debate mode and a Mafia game mode.
 - At least one supported CLI installed and logged in:
   - Codex CLI for ChatGPT/Codex players
   - Claude Code for Claude players
-  - Gemini CLI through `npx @google/gemini-cli` or a Gemini API key
+  - Gemini CLI through `npx @google/gemini-cli`
 
 ## Quick Start
 
@@ -35,13 +54,7 @@ Open:
 http://localhost:3000
 ```
 
-Use the `CLI 연결` section in the web UI:
-
-- click `로그인` for the provider you want to use
-- complete the provider login flow
-- when the app can verify the CLI, the card shows `연결됨`
-
-You can use only one provider, or mix multiple providers in the same debate.
+Use `연결 관리` in the web UI to log in to the provider CLIs you want to use. You can use a single provider or mix providers in the same session.
 
 ## Useful Commands
 
@@ -55,32 +68,34 @@ npm run auth:gemini
 npm run auth:all
 ```
 
-## Game Modes
+## Local Configuration
 
-### General Debate
+`config.json` is safe to commit and uses anonymous sample names/accounts.
 
-Choose `일반 토론`, enter a topic, select players, and start.
-Each AI receives the public transcript and responds in sequence.
+For private local overrides, create `config.local.json`. This file is ignored by git and can hold real account labels, player names, local model choices, or personal name pools.
 
-### Mafia Game
+```json
+{
+  "providers": {
+    "codex": { "account": "your-personal-email@example.com" },
+    "claude": { "account": "your-claude-login@example.com" },
+    "gemini": { "account": "your-gemini-login@example.com" }
+  },
+  "game": {
+    "namePool": ["Alpha", "Bravo", "Charlie"]
+  }
+}
+```
 
-Choose `마피아 게임`, enter a topic, select players, and start.
-The controller assigns roles and manages:
+Provider credentials remain in each provider's own CLI auth store. The app only checks local CLI status and does not store tokens.
 
-- day discussion
-- surprise speaking turns
-- pressure voting on day one
-- public vote reasons
-- mafia night chat
-- police investigations
-- doctor protections
-- night kills and win conditions
+## Privacy Notes
 
-Spectators can reveal roles in the UI, but player prompts only receive the information their role is allowed to know.
+Do not commit generated logs, `.env`, browser sessions, CLI auth caches, or `config.local.json`.
+This repository ignores local logs and generated agent input/output files by default.
 
-## Privacy
+Before publishing, scan for accidental secrets or personal data:
 
-Do not commit generated logs, `.env`, API keys, browser sessions, or CLI auth caches.
-This repo ignores local logs and generated agent input/output files by default.
-
-Provider credentials stay in each user's local CLI environment and are not stored in this project.
+```powershell
+rg -n --hidden "gmail|hancom|token|secret|password|api[_-]?key" .
+```

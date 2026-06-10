@@ -1,6 +1,6 @@
 {
   "game": {
-    "mode": "mafia",
+    "mode": "debate",
     "rounds": 1,
     "maxDays": 3,
     "dayRounds": 1,
@@ -19,12 +19,28 @@
       "enabled": true,
       "chance": 0.65
     },
-    "spectatorRevealRoles": true
+    "spectatorRevealRoles": true,
+    "namePool": [
+      "알파",
+      "브라보",
+      "찰리",
+      "델타",
+      "에코",
+      "폭스트롯",
+      "루나",
+      "오리온",
+      "제타",
+      "카이",
+      "노바",
+      "세이지"
+    ]
   },
   "providers": {
     "codex": {
       "command": "codex",
+      "label": "Codex",
       "color": "#6fb1ff",
+      "account": "",
       "note": "Codex uses the local authenticated ChatGPT/Codex session.",
       "model": {
         "insertAfter": "exec",
@@ -46,8 +62,10 @@
     },
     "claude": {
       "command": "claude",
+      "label": "Claude",
       "color": "#d69f68",
-      "note": "Claude Code uses the local authenticated Claude Code session, or ANTHROPIC_API_KEY when provided.",
+      "account": "",
+      "note": "Claude Code uses the local authenticated Claude Code session only.",
       "model": {
         "insertAt": "start",
         "args": ["--model", "{model}"],
@@ -66,8 +84,10 @@
     },
     "gemini": {
       "command": "npx",
+      "label": "Gemini",
       "color": "#9f87ff",
-      "note": "Gemini runs through npx @google/gemini-cli unless installed globally. Use local Gemini CLI auth or GEMINI_API_KEY.",
+      "account": "",
+      "note": "Gemini runs through npx @google/gemini-cli and uses local Gemini CLI auth only.",
       "model": {
         "insertAfter": "@google/gemini-cli",
         "args": ["-m", "{model}"],
@@ -86,10 +106,38 @@
       ]
     }
   },
+  "integrations": [
+    {
+      "id": "grok",
+      "label": "Grok",
+      "status": "planned",
+      "account": "",
+      "note": "Grok CLI or local agent adapter candidate.",
+      "setup": "공식 CLI나 로컬 agent 실행 방식이 확정되면 provider adapter를 추가해 연결할 수 있습니다."
+    },
+    {
+      "id": "cursor",
+      "label": "Cursor",
+      "status": "planned",
+      "account": "",
+      "note": "Cursor agent or IDE session adapter candidate.",
+      "setup": "Cursor CLI/Agent 자동화 방식이 확정되면 이 연결 목록에서 활성화할 수 있습니다."
+    }
+  ],
+  "moderator": {
+    "id": "moderator",
+    "displayName": "회의 진행자",
+    "provider": "codex",
+    "enabled": true,
+    "workdir": "agents/moderator",
+    "model": "",
+    "color": "#e4b84a",
+    "personality": "토론의 열기를 살리면서 논점 이탈을 잡고, 라운드 끝마다 선택지와 다음 질문을 좁히는 진행자."
+  },
   "players": [
     {
       "id": "gpt_1",
-      "displayName": "서준",
+      "displayName": "알파",
       "provider": "codex",
       "enabled": true,
       "workdir": "agents/gpt_1",
@@ -98,18 +146,8 @@
       "personality": "차분한 논리파. 감정 표현은 적지만 말의 모순을 끝까지 물고 늘어진다."
     },
     {
-      "id": "gpt_2",
-      "displayName": "지안",
-      "provider": "codex",
-      "enabled": true,
-      "workdir": "agents/gpt_2",
-      "model": "",
-      "color": "#38bdf8",
-      "personality": "날카로운 반문가. 상대의 애매한 표현을 바로 찌르고 압박한다."
-    },
-    {
       "id": "claude_1",
-      "displayName": "하린",
+      "displayName": "브라보",
       "provider": "claude",
       "enabled": true,
       "workdir": "agents/claude_1",
@@ -118,18 +156,8 @@
       "personality": "공감형 전략가. 분위기를 읽고 동맹처럼 다가가면서 정보를 끌어낸다."
     },
     {
-      "id": "claude_2",
-      "displayName": "도윤",
-      "provider": "claude",
-      "enabled": true,
-      "workdir": "agents/claude_2",
-      "model": "",
-      "color": "#a78bfa",
-      "personality": "침착한 회의주의자. 확신하지 않지만 의심의 방향을 조용히 바꾼다."
-    },
-    {
       "id": "gemini_1",
-      "displayName": "유나",
+      "displayName": "찰리",
       "provider": "gemini",
       "enabled": true,
       "workdir": "agents/gemini_1",
@@ -138,8 +166,28 @@
       "personality": "직감 강한 공격수. 작은 단서에도 과감히 몰아붙이고 판을 흔든다."
     },
     {
+      "id": "gpt_2",
+      "displayName": "델타",
+      "provider": "codex",
+      "enabled": true,
+      "workdir": "agents/gpt_2",
+      "model": "",
+      "color": "#38bdf8",
+      "personality": "날카로운 반문가. 상대의 애매한 표현을 바로 찌르고 압박한다."
+    },
+    {
+      "id": "claude_2",
+      "displayName": "에코",
+      "provider": "claude",
+      "enabled": true,
+      "workdir": "agents/claude_2",
+      "model": "",
+      "color": "#a78bfa",
+      "personality": "침착한 회의주의자. 확신하지 않지만 의심의 방향을 조용히 바꾼다."
+    },
+    {
       "id": "gemini_2",
-      "displayName": "민준",
+      "displayName": "폭스트롯",
       "provider": "gemini",
       "enabled": true,
       "workdir": "agents/gemini_2",

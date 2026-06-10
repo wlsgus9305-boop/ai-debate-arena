@@ -18,18 +18,28 @@
     <main class="layout">
       <aside class="control-panel">
         <section class="panel-section">
-          <h2>게임 설정</h2>
+          <h2>토론 설정</h2>
           <label class="field" for="modeSelect">
             <span>진행 모드</span>
             <select id="modeSelect">
-              <option value="mafia">마피아 게임</option>
               <option value="debate">일반 토론</option>
+              <option value="mafia">마피아 게임</option>
             </select>
           </label>
+          <div class="template-row" id="templateRow">
+            <button type="button" class="template-btn" data-template="tech">기술검토</button>
+            <button type="button" class="template-btn" data-template="support">지원요청</button>
+            <button type="button" class="template-btn" data-template="product">제품기획</button>
+            <button type="button" class="template-btn" data-template="risk">리스크</button>
+          </div>
           <label class="field" for="topic">
-            <span>오늘의 판</span>
-            <textarea id="topic" rows="3">서로의 공개 발언만 보고 마피아를 찾아라.</textarea>
+            <span id="topicLabel">토론 주제</span>
+            <textarea id="topic" rows="4">Jira 기반 기술지원 업무 자동화 구조를 어떻게 설계하면 좋을까?</textarea>
           </label>
+          <section class="actions">
+            <button id="startBtn" type="button">시작</button>
+            <button id="stopBtn" type="button">중지</button>
+          </section>
 
           <div class="small-grid">
             <label class="field" for="maxDays">
@@ -46,12 +56,11 @@
         <section class="panel-section">
           <div class="section-head">
             <h2>CLI 연결</h2>
-            <button id="checkProvidersBtn" type="button">연결 확인</button>
+            <button id="openConnectionsBtn" type="button">연결 관리</button>
           </div>
-          <div class="provider-status-list" id="providerStatusList"></div>
         </section>
 
-        <section class="panel-section">
+        <section class="panel-section mafia-options" id="mafiaOptions">
           <div class="section-head">
             <h2>역할 수</h2>
             <button id="applyRecommendBtn" type="button">추천 적용</button>
@@ -96,10 +105,6 @@
           <div class="players" id="players"></div>
         </section>
 
-        <section class="actions">
-          <button id="startBtn" type="button">시작</button>
-          <button id="stopBtn" type="button">중지</button>
-        </section>
       </aside>
 
       <section class="arena">
@@ -108,20 +113,54 @@
             <h2>관전석</h2>
             <p id="sessionMeta">아직 세션이 시작되지 않았습니다.</p>
           </div>
-          <button id="clearBtn" type="button">지우기</button>
+          <div class="arena-actions">
+            <button id="returnLiveBtn" class="return-live-btn" type="button" hidden>실시간 회의로 돌아가기</button>
+            <button id="clearBtn" type="button">지우기</button>
+          </div>
         </div>
 
         <div class="role-board" id="roleBoard"></div>
+        <div class="insight-panel" id="insightPanel">
+          <div>
+            <strong>토론 요약</strong>
+            <p id="insightSummary">토론을 시작하면 핵심 흐름이 여기에 정리됩니다.</p>
+          </div>
+          <div>
+            <strong>다음 액션</strong>
+            <p id="insightAction">참가자와 주제를 정한 뒤 시작하세요.</p>
+          </div>
+        </div>
+        <div class="history-panel">
+          <div class="history-head">
+            <div>
+              <strong>지난 판</strong>
+              <p>완료된 토론과 마피아 게임을 다시 봅니다.</p>
+            </div>
+            <button id="refreshHistoryBtn" type="button">새로고침</button>
+          </div>
+          <div class="history-list" id="sessionHistory"></div>
+        </div>
         <div class="timeline" id="timeline"></div>
+        <button class="scroll-bottom-btn" id="scrollBottomBtn" type="button" aria-label="맨 아래로 이동" hidden>↓</button>
         <div class="watch-dock" id="watchDock">
           <div class="activity-panel" id="activityPanel">
             <div class="activity-dot"></div>
             <div>
               <strong id="activityTitle">대기 중</strong>
-              <p id="activityDetail">새 게임을 시작하면 사회자와 AI 상태가 여기에 표시됩니다.</p>
+              <p id="activityDetail">새 세션을 시작하면 사회자와 AI 상태가 여기에 표시됩니다.</p>
             </div>
           </div>
-          <div class="life-panel">
+          <div class="follow-up-panel" id="followUpPanel" hidden>
+            <div class="follow-up-head">
+              <div>
+                <strong id="followUpTitle">참여자</strong>
+                <p id="followUpDescription">회의에 참여 중인 AI입니다.</p>
+              </div>
+              <button id="toggleFollowUpBtn" type="button">숨기기</button>
+            </div>
+            <div class="follow-up-list" id="followUpList"></div>
+          </div>
+          <div class="life-panel" id="lifePanel">
             <div>
               <strong>생존</strong>
               <div class="life-list" id="aliveList"></div>
@@ -134,6 +173,22 @@
         </div>
       </section>
     </main>
+
+    <div class="modal-backdrop" id="connectionsModal" hidden>
+      <section class="connection-modal" role="dialog" aria-modal="true" aria-labelledby="connectionsTitle">
+        <div class="modal-head">
+          <div>
+            <h2 id="connectionsTitle">AI 연결 관리</h2>
+            <p>계정과 연결 방법을 확인합니다.</p>
+          </div>
+          <div class="modal-actions">
+            <button id="refreshConnectionsBtn" type="button">새로고침</button>
+            <button id="closeConnectionsBtn" type="button" aria-label="닫기">닫기</button>
+          </div>
+        </div>
+        <div class="integration-list" id="integrationList"></div>
+      </section>
+    </div>
 
     <script src="/app.js" type="module"></script>
   </body>
